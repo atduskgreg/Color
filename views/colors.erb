@@ -1,0 +1,19 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+  <head>
+    <title></title>
+    <style>
+    div { 
+      float: left;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>All Colors <%= Color.count %></h1>
+    <p><a href="/color/new">Make a new color</a></p>
+    <br />
+    <% for color in Color.all %>
+      <%= color.html %>
+    <% end %>
+  </body>
+</html>

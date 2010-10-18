@@ -1,0 +1,31 @@
+browser   --->    server      -->     browser
+(client)  [req]   (do stuff)  [res]   (runs javascript)
+
+
+server's job:
+- understand a request
+=> url, parameters, etc.
+- do something with it
+(execute request)
+- build a response
+
+browser   <---    server
+          [res]
+
+
+browser   <---    web server
+                  (php in Apache)
+GET['thing']
+GET['dog']
+POST['User-Agent']
+
+browser   --->    web server --> application server --> our code
+                                 (ruby-ifies req) 
+                                 
+                                                    ==> sinatra
+                                                    (provide structure)
+                                                    (helpers)
+                                                    
+OR (Apached hosted):
+Phusion Passenger (aka "mod_ruby" [exactly like mod_php])
+
