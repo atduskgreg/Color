@@ -1,2 +1,3 @@
 dm-core
 sinatra
+dm-postgres-adapter
