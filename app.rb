@@ -4,14 +4,14 @@ require 'color'
 
 set :views, File.dirname(__FILE__) + '/views'
 
-get "/color" do
+get "/" do
   erb :colors
 end
 
 post "/color" do
   @color = Color.create :hex_value => params[:color], :width => params[:width], :height => params[:height]
   
-  erb :colors
+  redirect "/"
 end
 
 get "/color/new" do
