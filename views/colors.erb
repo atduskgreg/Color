@@ -9,7 +9,8 @@
     </style>
   </head>
   <body>
-    <h1>All Colors <%= Color.count %></h1>
+    <h1>All Colors</h1>
+    <p><%= Color.count %> colors so far.</p>
     <p><a href="/color/new">Make a new color</a></p>
     <br />
     <% for color in Color.all %>
