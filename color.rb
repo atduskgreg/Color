@@ -1,7 +1,8 @@
 require 'dm-core'
 
 #DataMapper.setup(:default, 'sqlite::memory:')
-DataMapper.setup(:default, 'sqlite:////Users/greg/code/sinatra/sqlite3.db')
+# DataMapper.setup(:default, 'sqlite:////Users/greg/code/sinatra/sqlite3.db')
+DataMapper.setup(:default, ENV['DATABASE_URL'] || 'mysql://localhost/itp-color')
 
 class Color
 #  attr_accessor :hex_value, :width, :height
