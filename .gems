@@ -1,3 +1,4 @@
 dm-core
 sinatra
 dm-postgres-adapter
+dm-migrations
