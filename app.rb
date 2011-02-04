@@ -4,6 +4,7 @@ require 'color'
 
 set :views, File.dirname(__FILE__) + '/views'
 
+# hello from github
 get "/" do
   erb :colors
 end
