@@ -1,0 +1,12 @@
+need to install:
+- ruby
+- rubygems
+- native extensions (i.e. need xcode/developer tools installed)
+- each ruby gem (sinatra, dm_core, dm_migrations, dm_sqlite_adapter)
+
+to bootstrap:
+- create the sqlite file
+- in irb require the class and run the migrations
+
+to run:
+- $ruby color.rb

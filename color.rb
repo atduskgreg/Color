@@ -1,22 +1,49 @@
+require 'rubygems'
+require 'sinatra'
 require 'dm-core'
+require 'dm-migrations'
 
-#DataMapper.setup(:default, 'sqlite::memory:')
-# DataMapper.setup(:default, 'sqlite:////Users/greg/code/sinatra/sqlite3.db')
-DataMapper.setup(:default, ENV['DATABASE_URL'] || 'mysql://localhost/itp_color')
+DataMapper.setup(:default, 'sqlite3:///Users/greg/code/sinatra/colors.db')
 
 class Color
-#  attr_accessor :hex_value, :width, :height
   include DataMapper::Resource   
   property :id,           Serial
-  property :hex_value,    String
+  property :color,        String
   property :width,        Integer
   property :height,       Integer
+end
+
+get "/new" do
+  <<-HTML
+  <form action="/color" method="POST">
+      <p><label>Color:</label><input type="text" name="color"  /></p>
+      <p><label>Width:</label><input type="text" name="width"  /></p>
+      <p><label>Height</label><input type="text" name="height"  /></p>
+      <p><input type="submit" value="create" /></p>
+    </form>
+  HTML
+end
+
+post "/color" do
+  @color = Color.create :color => params[:color], 
+                        :width => params[:width], 
+                        :height => params[:height]
   
-  def html
-    <<-ANYTHING
-    <div style="width:#{width}px; background-color:##{hex_value}; height:#{height}px">
-    &nbsp;
-    </div>
-    ANYTHING
+  redirect "/"
+end
+
+get "/" do
+  html = '<a href="/new">Add a color</a>'
+
+  for color in Color.all
+      html += <<-HTML
+      <div style="background-color:#{color.color}; 
+                             width:#{ color.width}px; 
+                             height:#{color.height}px">
+      &nbsp;
+      </div>
+      HTML
+
   end
+  html
 end
