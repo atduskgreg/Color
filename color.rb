@@ -1,10 +1,12 @@
+# load up the ruby libraries
 require 'rubygems'
 require 'sinatra'
 require 'dm-core'
-require 'dm-migrations'
 
-DataMapper.setup(:default, 'sqlite3:///Users/greg/code/sinatra/colors.db')
+# configure your app to store data as yaml files in db/
+DataMapper.setup(:default, {:adapter => 'yaml', :path => 'db'})
 
+# define your color class, properties are both schema for your data, instance variables, and accessor methods for working with them
 class Color
   include DataMapper::Resource   
   property :id,           Serial
@@ -13,7 +15,14 @@ class Color
   property :height,       Integer
 end
 
+# respond to GET on "/new"
+# a string returned from this action will be the response
 get "/new" do
+  # "heredoc" syntax: everything between here and the next "HTML" is a string
+  # markup for a form to create a color
+  # key things: 'action' attribute defines URL this will be sent to
+  # 'method' attribute defines verb it will be sent with
+  # input name attributes determine what keys are in the hash on the other side
   <<-HTML
   <form action="/color" method="POST">
       <p><label>Color:</label><input type="text" name="color"  /></p>
@@ -24,26 +33,40 @@ get "/new" do
   HTML
 end
 
+# respond to POST on "/color" (data from form above gets sent here)
 post "/color" do
-  @color = Color.create :color => params[:color], 
-                        :width => params[:width], 
-                        :height => params[:height]
+
+  # create a new instance of the Color class
+  color = Color.new
   
+  # set each attribute from the form values (which come in as this 'params' hash)
+  color.color = params[:color] # pull out the value corresponding to the key 'color' in the hash
+  color.width = params[:width]
+  color.height = params[:height]
+  
+  # save the color object to the database/file
+  color.save
+  
+  # redirect the user to the homepage
   redirect "/"
 end
 
+# respond to a GET request on the root of the site
 get "/" do
+  # start a string with a link
   html = '<a href="/new">Add a color</a>'
 
+  # loop through all the colors saved in the database
   for color in Color.all
+      # add html with the color, width, and height attributes inserted into the style
+      # heredoc syntax again
       html += <<-HTML
       <div style="background-color:#{color.color}; 
-                             width:#{ color.width}px; 
+                             width:#{color.width}px; 
                              height:#{color.height}px">
-      &nbsp;
       </div>
       HTML
-
   end
+  # return the full html string as the response
   html
 end
