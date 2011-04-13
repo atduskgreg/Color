@@ -5,7 +5,7 @@ require 'dm-core'
 
 
 # configure your app to store data as yaml files in db/
-DataMapper.setup(:default, ENV['DATABASE_URL'], {:adapter => 'yaml', :path => 'db'})
+DataMapper.setup(:default, ENV['DATABASE_URL'] || {:adapter => 'yaml', :path => 'db'})
 
 # define your color class, properties are both schema for your data, instance variables, and accessor methods for working with them
 class Rectangle
