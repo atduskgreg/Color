@@ -4,16 +4,17 @@ require 'sinatra'
 require 'dm-core'
 
 # configure your app to store data as yaml files in db/
-DataMapper.setup(:default, {:adapter => 'yaml', :path => 'db'})
+DataMapper.setup(:default, ENV['DATABASE_URL'] {:adapter => 'yaml', :path => 'db'})
 
 # define your color class, properties are both schema for your data, instance variables, and accessor methods for working with them
-class Color
+class Rectangle
   include DataMapper::Resource   
   property :id,           Serial
   property :color,        String
   property :width,        Integer
   property :height,       Integer
 end
+
 
 # respond to GET on "/new"
 # a string returned from this action will be the response
@@ -24,7 +25,7 @@ get "/new" do
   # 'method' attribute defines verb it will be sent with
   # input name attributes determine what keys are in the hash on the other side
   <<-HTML
-  <form action="/color" method="POST">
+  <form method="POST" action="/rectangle">
       <p><label>Color:</label><input type="text" name="color"  /></p>
       <p><label>Width:</label><input type="text" name="width"  /></p>
       <p><label>Height</label><input type="text" name="height"  /></p>
@@ -34,18 +35,18 @@ get "/new" do
 end
 
 # respond to POST on "/color" (data from form above gets sent here)
-post "/color" do
-
+post "/rectangle" do
+  
   # create a new instance of the Color class
-  color = Color.new
+  rectangle = Rectangle.new
   
   # set each attribute from the form values (which come in as this 'params' hash)
-  color.color = params[:color] # pull out the value corresponding to the key 'color' in the hash
-  color.width = params[:width]
-  color.height = params[:height]
+  rectangle.color = params[:color] # pull out the value corresponding to the key 'color' in the hash
+  rectangle.width = params[:width]
+  rectangle.height = params[:height]
   
   # save the color object to the database/file
-  color.save
+  rectangle.save
   
   # redirect the user to the homepage
   redirect "/"
@@ -57,13 +58,14 @@ get "/" do
   html = '<a href="/new">Add a color</a>'
 
   # loop through all the colors saved in the database
-  for color in Color.all
+  for rectangle in Rectangle.all
       # add html with the color, width, and height attributes inserted into the style
       # heredoc syntax again
+      
       html += <<-HTML
-      <div style="background-color:#{color.color}; 
-                             width:#{color.width}px; 
-                             height:#{color.height}px">
+      <div style="background-color:#{rectangle.color}; 
+                             width:#{rectangle.width}px; 
+                             height:#{rectangle.height}px">
       </div>
       HTML
   end
