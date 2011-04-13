@@ -1,5 +1,5 @@
 require 'rubygems'
 require 'sinatra'
-require 'color'
+require 'rectangle'
 
 run Sinatra::Application
