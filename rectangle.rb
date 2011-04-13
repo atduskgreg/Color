@@ -3,6 +3,7 @@ require 'rubygems'
 require 'sinatra'
 require 'dm-core'
 
+
 # configure your app to store data as yaml files in db/
 DataMapper.setup(:default, ENV['DATABASE_URL'] {:adapter => 'yaml', :path => 'db'})
 
